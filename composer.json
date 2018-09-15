@@ -1,0 +1,23 @@
+{
+    "name": "sxule/composer-api",
+    "description": "Simple interface for running Composer commands via PHP.",
+    "type": "library",
+    "require": {
+        "composer/composer": "^1.7"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Justin Jordan",
+            "email": "jsxule@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "sxule\\ComposerAPI\\": "src/"
+        }
+    }
+}
