@@ -28,7 +28,7 @@ class ComposerAPI
      *
      * Updates all packages or those specified to their latest versions.
      *
-     * @param   array   Array of packages to update... ['sxule/meddle']
+     * @param   array   Array of packages to update - i.e. ['sxule/meddle']
      *
      * @return  string  Returns Composer output
      */
