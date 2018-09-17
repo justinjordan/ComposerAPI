@@ -12,10 +12,12 @@ class ComposerAPI
     protected $composerHome;
     protected $composerFile;
 
-    public function __construct(string $baseDir, string $composerFile = '')
+    public function __construct(string $baseDir, string $composerFile = '', string $composerHome = '')
     {
         $this->baseDir = $baseDir;
         $this->composerFile = !empty($composerFile) ? $composerFile : $baseDir . '/composer.json';
+        $this->composerHome = !empty($composerHome) ? $composerHome : $baseDir . '/vendor/bin/composer';
+        putenv('COMPOSER_HOME=' . $this->composerHome);
     }
 
     /**
