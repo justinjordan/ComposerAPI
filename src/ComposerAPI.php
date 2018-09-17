@@ -6,27 +6,38 @@ use Composer\Factory;
 use Composer\Installer;
 use Composer\IO\BufferIO;
 
-/**
- * Integrates with Composer to automatically downloads LOL's Composer packages
- * into the project and to allow future plugin installation via Composer
- */
 class ComposerAPI
 {
     protected $baseDir;
     protected $composerHome;
     protected $composerFile;
 
-    public function __construct(string $baseDir, string $composerHome = '', string $composerFile = '')
+    public function __construct(string $baseDir, string $composerFile = '')
     {
         $this->baseDir = $baseDir;
-        $this->composerHome = !empty($composerHome) ? $composerHome : $baseDir . '/vendor/bin/composer';
         $this->composerFile = !empty($composerFile) ? $composerFile : $baseDir . '/composer.json';
     }
 
     /**
-     * Same as running `composer update` in terminal
+     * Installs all packages in composer.json
+     * Same as running `composer install` in terminal
      *
-     * Updates all packages or those specified to their latest versions.
+     * @return string   Returns Composer output
+     */
+    public function install()
+    {
+        $io = new BufferIO();
+        $composer = Factory::create($io, $this->composerFile);
+        $installer = Installer::create($io, $composer);
+
+        $response = $installer->run();
+
+        return $io->getOutput();
+    }
+
+    /**
+     * Updates all packages or those specified to their latest versions
+     * Same as running `composer update` in terminal
      *
      * @param   array   Array of packages to update - i.e. ['sxule/meddle']
      *
@@ -34,20 +45,18 @@ class ComposerAPI
      */
     public function update(array $packages = [])
     {
-        putenv('COMPOSER_HOME=' . $this->composerHome);
-
         $io = new BufferIO();
         $composer = Factory::create($io, $this->composerFile);
         $installer = Installer::create($io, $composer);
 
-        /** packages to lower */
+        /** packages to lowercase */
         $packages = array_map('strtolower', $packages);
 
         $installer
             ->setUpdateWhitelist(!empty($packages) ? $packages : [])
             ->setUpdate(true);
 
-        $installer->run();
+        $response = $installer->run();
 
         return $io->getOutput();
     }
