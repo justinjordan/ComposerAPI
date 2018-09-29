@@ -1,6 +1,6 @@
 <?php
 
-namespace sxule;
+namespace Sxule;
 
 use Composer\Factory;
 use Composer\Installer;
