@@ -2,6 +2,8 @@
 
 namespace Sxule;
 
+use ReflectionClass;
+use Composer\Composer;
 use Composer\Factory;
 use Composer\Installer;
 use Composer\IO\BufferIO;
@@ -61,5 +63,19 @@ class ComposerAPI
         $response = $installer->run();
 
         return $io->getOutput();
+    }
+
+    /**
+     * Gets Composer's absolute vendor path
+     * @return string
+     */
+    public function getVendorDir()
+    {
+        $ref = new ReflectionClass(Composer::class);
+        $path = $ref->getFileName();
+
+        $path = preg_replace('/\/composer\/[\s\S]+\/Composer.php/', '', $path);
+
+        return $path;
     }
 }
